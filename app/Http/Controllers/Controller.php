@@ -266,7 +266,8 @@ class Controller extends BaseController
                 'housenumber' => $request->housenumber,
                 'city' => $request->city,
                 'ip_adres' => $ip,
-                'image' => $request->image
+                'image' => $request->image,
+                'active' => 1,
             ]);
 
             $user->save();
@@ -274,7 +275,7 @@ class Controller extends BaseController
 
             $mail = $this->sendConfirmMail($user->email,$user->first_name);
 
-            return "success";
+            return view('confirm',['hasSubmitted' => true ]);
         }
 
 
@@ -299,18 +300,27 @@ class Controller extends BaseController
         $periodmonth4 = $year. "-10-01";
         $period4end = $year . "-12-31";
 
-        if($month >= 1 && $month <= 3){
+        $user = User::where('active', 1)->first();
+
+        if($user == null){
+            return "no one participated";
+        }else if($month >= 1 && $month <= 3){
             $alreadyHasWinner = Winners::whereBetween('created_at', [$periodmonth1,$period1end])->get();
 
             if($alreadyHasWinner->isEmpty()){
-            $user = User::whereBetween('created_at', [$periodmonth1,$period1end])->inRandomOrder()->first();
-            $addWinner = new Winners([
-             "user_id" => $user->id
-            ]);
-            $addWinner->save();
 
-                $mail = $this->sendMailToAdmin($adminMail,$adminTitle,$user);
-            return  $user;
+            $user = User::whereBetween('created_at', [$periodmonth1,$period1end])->where('active', 1)->inRandomOrder()->first();
+                if($user == null){
+                    return "no user in this period";
+                }else{
+                    $addWinner = new Winners([
+                     "user_id" => $user->id
+                    ]);
+                    $addWinner->save();
+
+                        $mail = $this->sendMailToAdmin($adminMail,$adminTitle,$user);
+                    return  $user;
+                }
             }else{
                 return "there already is a winner";
             }
@@ -320,13 +330,17 @@ class Controller extends BaseController
 
             if($alreadyHasWinner->isEmpty()){
 
-            $user = User::whereBetween('created_at', [$periodmonth2,$period2end])->inRandomOrder()->first();
-            $addWinner = new Winners([
-                "user_id" => $user->id
-            ]);
-            $addWinner->save();
-                $mail =    $this->sendMailToAdmin($adminMail,$adminTitle,$user);
-            return  $user;
+            $user = User::whereBetween('created_at', [$periodmonth2,$period2end])->where('active', 1)->inRandomOrder()->first();
+                if($user == null){
+                    return "no user in this period";
+                }else{
+                    $addWinner = new Winners([
+                        "user_id" => $user->id
+                    ]);
+                    $addWinner->save();
+                        $mail =    $this->sendMailToAdmin($adminMail,$adminTitle,$user);
+                    return  $user;
+                }
             }else{
                 return "there already is a winner";
             }
@@ -335,13 +349,17 @@ class Controller extends BaseController
             $alreadyHasWinner = Winners::whereBetween('created_at', [$periodmonth3,$period3end])->get();
 
             if($alreadyHasWinner->isEmpty()){
-            $user = User::whereBetween('created_at', [$periodmonth3,$period3end])->inRandomOrder()->first();
-            $addWinner = new Winners([
-                "user_id" => $user->id
-            ]);
-            $addWinner->save();
-                $mail =   $this->sendMailToAdmin($adminMail,$adminTitle,$user);
-            return  $user;
+            $user = User::whereBetween('created_at', [$periodmonth3,$period3end])->where('active', 1)->inRandomOrder()->first();
+                if($user == null){
+                    return "no user in this period";
+                }else {
+                    $addWinner = new Winners([
+                        "user_id" => $user->id
+                    ]);
+                    $addWinner->save();
+                    $mail = $this->sendMailToAdmin($adminMail, $adminTitle, $user);
+                    return $user;
+                }
             }else{
                 return "there already is a winner";
             }
@@ -351,13 +369,17 @@ class Controller extends BaseController
             $alreadyHasWinner = Winners::whereBetween('created_at', [$periodmonth4,$period4end])->get();
 
             if($alreadyHasWinner->isEmpty()){
-            $user = User::whereBetween('created_at', [$periodmonth4,$period4end])->inRandomOrder()->first();
-            $addWinner = new Winners([
-                "user_id" => $user->id
-            ]);
-            $addWinner->save();
-               $mail = $this->sendMailToAdmin($adminMail,$adminTitle,$user);
-                return  $user;
+                $user = User::whereBetween('created_at', [$periodmonth4,$period4end])->where('active', 1)->inRandomOrder()->first();
+                if($user == null){
+                    return "no user in this period";
+                }else {
+                    $addWinner = new Winners([
+                        "user_id" => $user->id
+                    ]);
+                    $addWinner->save();
+                    $mail = $this->sendMailToAdmin($adminMail, $adminTitle, $user);
+                    return $user;
+                }
             }else{
                 return "there already is a winner";
             }

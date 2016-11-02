@@ -6,7 +6,7 @@
         <div class="page-wrapper">
             <div class="page-content">
                 <h1>Winnaars</h1>
-                <table style="width:100%">
+                <table class="table_winners" style="width:100%">
                       <tr>
                             <th>voornaam</th>
                             <th>achternaam</th>

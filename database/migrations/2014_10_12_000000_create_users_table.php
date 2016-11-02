@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('image');
             $table->string('ip_adres');
+            $table->tinyInteger('active');
             $table->timestamps();
         });
     }
