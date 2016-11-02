@@ -37,9 +37,21 @@ Route::get('/checkqr', [
     'uses' => 'Controller@getHome'
 ]);
 
-Route::get('/cron_winner', 'Controller@pickWinner' );
+Route::get('/admin', [
+    'as' => 'admin',
+    'uses' => 'Controller@getAdmin'
+]);
 
-Route::post('/checkqr', 'Controller@checkQr');
+Route::get('/delete_users', [
+    'as' => 'home',
+    'uses' => 'Controller@getHome'
+]);
+
+Route::post('/delete_users', 'Controller@delete_users');
+
+Route::get('/cron_winner', 'CronController@pickWinner' );
+
+Route::post('/checkqr', 'qrcodeController@checkQr');
 
 Route::post('/submit_user', 'Controller@submit_user');
 

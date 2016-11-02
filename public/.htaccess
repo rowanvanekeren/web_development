@@ -37,3 +37,9 @@
       require valid-user
 
     </Files>
+
+     <Files "admin">
+
+          require valid-user
+
+        </Files>

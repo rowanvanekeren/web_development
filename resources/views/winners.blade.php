@@ -3,15 +3,15 @@
 @section('body')
 
     <div class="page-banner">
-        <div class="page-wrapper">
+        <div class="page-wrapper winner_wrapper">
             <div class="page-content">
                 <h1>Winnaars</h1>
-                <table class="table_winners" style="width:100%">
-                      <tr>
-                            <th>voornaam</th>
-                            <th>achternaam</th>
-                            <th>tijd</th>
-                          </tr>
+<table class="table_winners" style="width:80%">
+        <tr class="table_head">
+        <th>voornaam</th>
+        <th>achternaam</th>
+        <th>tijd</th>
+        </tr>
 @foreach($winners as $winner)
     <tr>
         <th>{{$winner->first_name}}</th>

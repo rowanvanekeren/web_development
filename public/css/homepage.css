@@ -30,8 +30,15 @@ margin: 0 auto;
      background: rgba(255, 255, 255, 0.8);
      border-top: 20px solid red;
      margin: -150px 0 0 -300px;
+
  }
 
+.winner_wrapper{
+    overflow-y: scroll;
+}
+.admin_wrapper{
+    overflow-y: scroll;
+}
 .page-wrapper-anim{
     position: absolute;
     top: 50%;
@@ -87,6 +94,7 @@ margin: 0 auto;
     text-align: center;
     color:black;
     opacity: 1 !important;
+
 
 }
 
@@ -236,15 +244,47 @@ margin: 0 auto;
     line-height: 40px;
     border-collapse: separate;
     border-spacing: 0;
-    border: 2px solid #ed1c40;
+    border: 2px solid #211e21;
     width: 500px;
-    margin: 50px auto;
+    margin: 0px auto;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,.16);
     border-radius: 2px;
 }
 
-.table_winners th tr:first-child {
-    background: #ed1c40;
-    color: #fff;
-    border: none;
+.table_head{
+    background-color: #464646;
+    color:white;
+}
+
+.admin_buttons{
+    background-color: #464646;
+    color:white;
+
+    margin-top: 5px;
+}
+
+.home_btn{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color:white;
+
+    position: absolute;
+    text-align: center;
+    right:5%;
+    top: 5%;
+    z-index: 5;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    -webkit-clip-path: circle(50% at 50% 50%);
+    clip-path: circle(50% at 50% 50%);
+}
+
+.home_btn a {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color:white;
+    text-decoration: none;
+}
+
+.harddelete{
+    background-color: red;
 }

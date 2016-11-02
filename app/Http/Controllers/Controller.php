@@ -16,26 +16,19 @@ use App\Winners;
 use App\Codes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use app\Helpers\Helpers;
 
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function getIP(){
-        $ip = "none";
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip =  $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip =  $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ip =  $_SERVER['REMOTE_ADDR'];
-        }
-        return $ip;
-    }
+
 
     public function checkIP(){
-        $ip = $this->getIP();
+
+        $ip = new Helpers;
+        $ip->getIP();
         $ipCheck = User::where('ip_adres', $ip)->get();
 
         if(!$ipCheck->isEmpty()){
@@ -92,122 +85,7 @@ class Controller extends BaseController
 
     }
 
-    public function sendConfirmMail($emailTo, $first_name){
 
-        require(base_path().'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php');
-        $mail = new PHPMailer;
-
-//$mail->SMTPDebug = 3;                               // Enable verbose debug output
-
-      //  $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'smtp.live.com';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = 'cocagiveaway@hotmail.com';                 // SMTP username
-        $mail->Password = 'cocacola12';                           // SMTP password
-        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 587;                                    // TCP port to connect to
-        $mail->setFrom('cocagiveaway@hotmail.com', 'CocaCola');
-        $mail->addAddress($emailTo, $first_name);     // Add a recipient
-        $mail->addReplyTo('info@example.com', 'Information');
-        $mail->isHTML(false);                                  // Set email format to HTML
-
-        $mail->Subject = 'Bedankt voor het meedoen met de CocaCola prijsvraag!';
-        $mail->Body    = 'wanneer je verkozen wordt tot winnaar zul je automatisch een mail krijgen';
-        $mail->AltBody = 'wanneer je verkozen wordt tot winnaar zul je automatisch een mail krijgen';
-
-        if(!$mail->send()) {
-            echo 'Message could not be sent.';
-            return 'Mailer Error: ' . $mail->ErrorInfo;
-        } else {
-            return 'Message has been sent';
-        }
-    }
-
-    public function sendMailToAdmin($emailTo, $first_name, $winner){
-
-        require(base_path().'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php');
-        $mail = new PHPMailer;
-
-//$mail->SMTPDebug = 3;                               // Enable verbose debug output
-
-       // $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'smtp.live.com';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = 'cocagiveaway@hotmail.com';                 // SMTP username
-        $mail->Password = 'cocacola12';                           // SMTP password
-        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 587;                                    // TCP port to connect to
-        $mail->setFrom('cocagiveaway@hotmail.com', 'CocaCola');
-        $mail->addAddress($emailTo, $first_name);     // Add a recipient
-        $mail->addReplyTo('info@example.com', 'Information');
-        $mail->isHTML(false);                                  // Set email format to HTML
-
-        $mail->Subject = 'Wij hebben een winnaar geselecteerd voor deze periode';
-        $mail->Body    = 'de winnaar is' . $winner;
-        $mail->AltBody = 'de winnaar is' . $winner;
-
-        if(!$mail->send()) {
-            echo 'Message could not be sent.';
-            return 'Mailer Error: ' . $mail->ErrorInfo;
-        } else {
-            return 'Message has been sent';
-        }
-    }
-
-    public function checkQr(Request $request){
-
-//        if(isset($request->image)){
-//            if (true/*$request->file('image')->isValid()*/){
-//                $OriginalName = $request->file('image')->getClientOriginalName();
-//
-//                $request->file('image')->move($destinationPath,$OriginalName);
-//
-//                $image = base_path() . '/public/images/' . $OriginalName;
-//
-//                $qrcode = new QrReader($image);
-//                $text = $qrcode->text(); //return decoded text from QR Code
-//
-//               return $text;
-//            }
-//        }
-        if(isset($request->image)){
-            try{
-            $destinationPath =  base_path() . "/public/images/";
-            define('UPLOAD_DIR',$destinationPath);
-            $img = $request->image;
-            $img = str_replace('data:image/png;base64,', '', $img);
-            $img = str_replace(' ', '+', $img);
-            $data = base64_decode($img);
-            $unique_code=  "qrcode-" . uniqid() . '.png';
-            $file = $destinationPath . $unique_code  ;
-            $success = file_put_contents($file, $data);
-        $testfile = base_path() . "/public/images/qr.png";
-                if($success){
-                    try{
-                        $qrcode = new QrReader((string)$file);
-                        $text = $qrcode->text();
-                        if($text != ""){
-                            $check = Codes::where('code', $text)->where('user_id', null)->get();
-                            if(!$check->isEmpty()){
-                            return ['success',$text, $unique_code];
-                            }else{
-                                return ['fail',"qr bestaat niet in database"];
-                            }
-                        }
-                        else{
-                            return ['fail',"qr code niet gevonden"];
-                        }
-                    }catch(Exception $e){
-                        return "qr code niet gevonden";
-                    }
-                }
-            return  "error";
-            }catch(Exception $e){
-                return "error";
-            }
-        }
-        return "error";
-    }
 
     public function runFakeDateOnce(){
         $length = 8;
@@ -272,8 +150,9 @@ class Controller extends BaseController
 
             $user->save();
             $code = $this->saveCode($request->code,$user->id);
-
-            $mail = $this->sendConfirmMail($user->email,$user->first_name);
+            $mail = new Helpers;
+            $mail->sendConfirmMail($user->email,$user->first_name);
+/*            $mail = $this->sendConfirmMail($user->email,$user->first_name);*/
 
             return view('confirm',['hasSubmitted' => true ]);
         }
@@ -282,116 +161,57 @@ class Controller extends BaseController
         //$this->sendConfirmMail();
     }
 
-    public function pickWinner(){
 
-        $adminMail = "rowanvanekeren@hotmail.com";
-        $adminTitle = "rowan van ekeren";
-
-        $date = new DateTime();
-        $currentFormat = $date->format('Y-m-d H:i:s');
-        $year = $date->format('Y');
-        $month = $date->format('m');
-        $periodmonth1 = $year. "-01-01";
-        $period1end = $year. "-03-31";
-        $periodmonth2 = $year. "-04-01";
-        $period2end = $year. "-06-30";
-        $periodmonth3 = $year. "-07-01";
-        $period3end = $year. "-09-30";
-        $periodmonth4 = $year. "-10-01";
-        $period4end = $year . "-12-31";
-
-        $user = User::where('active', 1)->first();
-
-        if($user == null){
-            return "no one participated";
-        }else if($month >= 1 && $month <= 3){
-            $alreadyHasWinner = Winners::whereBetween('created_at', [$periodmonth1,$period1end])->get();
-
-            if($alreadyHasWinner->isEmpty()){
-
-            $user = User::whereBetween('created_at', [$periodmonth1,$period1end])->where('active', 1)->inRandomOrder()->first();
-                if($user == null){
-                    return "no user in this period";
-                }else{
-                    $addWinner = new Winners([
-                     "user_id" => $user->id
-                    ]);
-                    $addWinner->save();
-
-                        $mail = $this->sendMailToAdmin($adminMail,$adminTitle,$user);
-                    return  $user;
-                }
-            }else{
-                return "there already is a winner";
-            }
-
-        }else if($month >= 4 && $month <= 6){
-            $alreadyHasWinner = Winners::whereBetween('created_at', [$periodmonth2,$period2end])->get();
-
-            if($alreadyHasWinner->isEmpty()){
-
-            $user = User::whereBetween('created_at', [$periodmonth2,$period2end])->where('active', 1)->inRandomOrder()->first();
-                if($user == null){
-                    return "no user in this period";
-                }else{
-                    $addWinner = new Winners([
-                        "user_id" => $user->id
-                    ]);
-                    $addWinner->save();
-                        $mail =    $this->sendMailToAdmin($adminMail,$adminTitle,$user);
-                    return  $user;
-                }
-            }else{
-                return "there already is a winner";
-            }
-
-        }else if($month >= 7 && $month <= 9){
-            $alreadyHasWinner = Winners::whereBetween('created_at', [$periodmonth3,$period3end])->get();
-
-            if($alreadyHasWinner->isEmpty()){
-            $user = User::whereBetween('created_at', [$periodmonth3,$period3end])->where('active', 1)->inRandomOrder()->first();
-                if($user == null){
-                    return "no user in this period";
-                }else {
-                    $addWinner = new Winners([
-                        "user_id" => $user->id
-                    ]);
-                    $addWinner->save();
-                    $mail = $this->sendMailToAdmin($adminMail, $adminTitle, $user);
-                    return $user;
-                }
-            }else{
-                return "there already is a winner";
-            }
-
-        }else if($month >= 10 && $month <= 12){
-
-            $alreadyHasWinner = Winners::whereBetween('created_at', [$periodmonth4,$period4end])->get();
-
-            if($alreadyHasWinner->isEmpty()){
-                $user = User::whereBetween('created_at', [$periodmonth4,$period4end])->where('active', 1)->inRandomOrder()->first();
-                if($user == null){
-                    return "no user in this period";
-                }else {
-                    $addWinner = new Winners([
-                        "user_id" => $user->id
-                    ]);
-                    $addWinner->save();
-                    $mail = $this->sendMailToAdmin($adminMail, $adminTitle, $user);
-                    return $user;
-                }
-            }else{
-                return "there already is a winner";
-            }
-        }else{
-            return "error";
-        }
-    }
 
     public function getWinners(){
 
         $winners = User::has('winner')->get();
 
         return view('winners',['winners' => $winners]);
+    }
+
+    public function getAdmin(){
+        $users = User::all();
+        return view('admin',['users' => $users]);
+    }
+
+    public function delete_users(Request $request){
+        $selectedUsers = $request->selectedUsers;
+        $users = User::all();
+        if(isset($selectedUsers)){
+            $active = 1;
+            if(isset($request->delete)){
+        $active = 0;
+            }else if(isset($request->add)){
+                $active = 1;
+            }else if(isset($request->hard_delete)){
+                foreach ($selectedUsers as $user) {
+                    $delete = User::where('id',$user)->first();
+                    $code = Codes::where('user_id',$user)->first();
+                    $winner = Winners::where('user_id',$user)->first();
+                    if($code != null){
+                        $code->user_id = null;
+                        $code->save();
+                    }
+                    if($winner != null){
+                        $winner->delete();
+                    }
+
+                    $delete->delete();
+                }
+                return $this->getAdmin();
+            }
+            foreach ($selectedUsers as $user) {
+                $update = User::where('id',$user)->first();
+                $update->active = $active;
+                $update->save();
+            }
+            return $this->getAdmin();
+        }
+        else{
+            return $this->getAdmin();
+        }
+
+
     }
 }
