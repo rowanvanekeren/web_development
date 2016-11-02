@@ -231,10 +231,15 @@ margin: 0 auto;
     margin-top: 15px;
 }
 
-.error_validation{
+.error_validation ul{
     list-style: none;
-}
 
+}
+.error_validation{
+
+    height: 80px;
+    overflow-y: scroll;
+}
 .table_winners{
     color: #333;
     font-family: sans-serif;
