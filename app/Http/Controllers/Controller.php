@@ -84,7 +84,7 @@ class Controller extends BaseController
 
     }
 
-/*    public function runFakeDateOnce(){
+    public function runFakeDateOnce(){
         $length = 8;
 
         $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
@@ -101,7 +101,7 @@ class Controller extends BaseController
 
             $code->save();
         }
-    }*/
+    }
 
     public function submit_user(Request $request){
        $ipExist = $this->checkIP();

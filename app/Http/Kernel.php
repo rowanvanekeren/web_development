@@ -3,6 +3,9 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Controllers\CronController;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends HttpKernel
 {
@@ -53,4 +56,13 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];
+
+ /*   protected function schedule(Schedule $schedule)
+    {
+        $schedule->call(function () {
+           $cron_task = new CronController();
+            $cron_task ->pickWinner();
+
+        })->everyMinute();
+    }*/
 }
