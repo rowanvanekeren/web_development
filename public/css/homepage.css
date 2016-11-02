@@ -1,0 +1,228 @@
+.homepage-body{
+    margin: 0 auto;
+    padding: 0;
+}
+
+.page-banner{
+position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/banner/coke-outdoor-9.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.loading{
+    background-image: url('../images/loading/ajax-loader.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+margin: 0 auto;
+}
+
+.page-wrapper{
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     width: 600px;
+     height: 300px;
+     background: rgba(255, 255, 255, 0.8);
+     border-top: 20px solid red;
+     margin: -150px 0 0 -300px;
+ }
+
+.page-wrapper-anim{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.8);
+    border-top: 20px solid red;
+    margin: -150px 0 0 -300px;
+}
+.page-upload-wrapper{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1000px;
+    height: 500px;
+    background: rgba(255, 255, 255, 0.8);
+    border-top: 20px solid red;
+    margin: -250px 0 0 -500px;
+    transition: 0.5s ;
+}
+
+.page-usrinf-wrapper{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1000px;
+    height: 500px;
+    background: rgba(255, 255, 255, 0.8);
+    border-top: 20px solid red;
+    margin: -250px 0 0 -500px;
+
+}
+
+.page-usrinf-wrapper-anim{
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    background: rgba(255, 255, 255, 0.8);
+    border-top: 20px solid red;
+    margin: 0px 0 0 -300px;
+    transition: 0.5s ;
+}
+
+
+.page-content{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0 auto;
+
+    width: 100%;
+    text-align: center;
+    color:black;
+    opacity: 1 !important;
+
+}
+
+.page-start-button{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    width: 200px;
+    height: 50px;
+    background-color: #d8000b;
+    border: 0px solid black;
+    font-weight: bold;
+
+}
+
+.page-start-button:hover{
+    font-size: 30px;
+    transition: 0.5s;
+}
+
+.enable-video-end{
+    position: absolute;
+    width: 180px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.8);
+    top: 0;
+    left: 50%;
+    margin: 0 0 0 -90px;
+    transition: 1s;
+}
+.enable-video-start{
+    position: absolute;
+    width: 180px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.8);
+    top: 0;
+    left: 50%;
+    margin: -50px 0 0 -90px;
+    transition: 1s;
+}
+
+.start-capture-btn{
+    border-radius: 10px;
+    width: 160px;
+    height: 30px;
+    margin: 10px 10px 10px 10px;
+    background-color: #d8000b;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: white;
+}
+
+#startbutton{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    width: 200px;
+    height: 50px;
+    background-color: #d8000b;
+    border: 0px solid black;
+    font-weight: bold;
+}
+
+#resetButton{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    width: 200px;
+    height: 50px;
+    background-color: #5f000b;
+    border: 0px solid black;
+    font-weight: bold;
+}
+#scanqrbutton{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    width: 200px;
+    height: 50px;
+    background-color: #d8000b;
+    border: 0px solid black;
+    font-weight: bold;
+}
+#nextstep{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    width: 200px;
+    height: 50px;
+    background-color: #d8000b;
+    border: 0px solid black;
+    font-weight: bold;
+}
+
+.capture-screen{
+    margin-top: 15px;
+}
+
+.form-fields{
+    width: 85%;
+
+    margin-top: 15px;
+    text-align: right;
+}
+.form-fields input{
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 15px;
+    height: 30px;
+    padding: 5px
+}
+
+#submit-user{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    width: 300px;
+    height: 50px;
+    background-color: #d8000b;
+    border: 0px solid black;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.error_validation{
+    list-style: none;
+}

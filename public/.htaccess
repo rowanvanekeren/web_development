@@ -1,0 +1,39 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+#____________________________________________________________
+   # RewriteCond %{HTTPS} !^on
+   # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+#____________________________________________________________
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    </IfModule>
+    #AuthUserFile /customers/6/0/b/rowanvanekeren.nl/httpd.www/public/.htpasswd
+    #AuthUserFile /customers/6/0/b/rowanvanekeren.nl/httpd.www/public/.htpasswd
+    AuthUserFile C:\xampp\htdocs\projects\3e_jaar\web_development\prijsvraag\public\.htpasswd
+
+    AuthName "cron_winner"
+
+    AuthType Basic
+
+    <Files "cron_winner">
+
+      require valid-user
+
+    </Files>
