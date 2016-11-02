@@ -20,6 +20,12 @@ class qrcodeController extends Controller
 {
     public function checkQr(Request $request){
 
+        $error = [
+            ['fail',"qr not found in db"],
+            ['fail',"qr not found"],
+            'error'
+        ];
+
 //        if(isset($request->image)){
 //            if (true/*$request->file('image')->isValid()*/){
 //                $OriginalName = $request->file('image')->getClientOriginalName();
@@ -45,7 +51,7 @@ class qrcodeController extends Controller
                 $unique_code=  "qrcode-" . uniqid() . '.png';
                 $file = $destinationPath . $unique_code  ;
                 $success = file_put_contents($file, $data);
-                $testfile = base_path() . "/public/images/qr.png";
+                //$testfile = base_path() . "/public/images/qr.png";
                 if($success){
                     try{
                         $qrcode = new QrReader((string)$file);
@@ -55,21 +61,21 @@ class qrcodeController extends Controller
                             if(!$check->isEmpty()){
                                 return ['success',$text, $unique_code];
                             }else{
-                                return ['fail',"qr bestaat niet in database"];
+                                return $error[0];
                             }
                         }
                         else{
-                            return ['fail',"qr code niet gevonden"];
+                            return $error[1];
                         }
                     }catch(Exception $e){
-                        return "qr code niet gevonden";
+                        return $error[1];
                     }
                 }
-                return  "error";
+                return  $error[2];
             }catch(Exception $e){
-                return "error";
+                return $error[2];
             }
         }
-        return "error";
+        return $error[2];
     }
 }

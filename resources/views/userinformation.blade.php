@@ -21,7 +21,7 @@
         </div>
 
         <div class="form-fields">
-        <label for="adres">adres</label>
+        <label for="adres">straatnaam</label>
         <input type="text" id="adres" name="adres" value="{{ old('adres') }}" />
         </div>
 

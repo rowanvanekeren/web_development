@@ -17,7 +17,11 @@ use Illuminate\Support\Facades\Input;
 class CronController extends Controller
 {
     public function pickWinner(){
-
+        $error = ["no one participated",
+            "no user in this period",
+            "there already is a winner",
+            "error"
+        ];
         $adminMail = "rowanvanekeren@hotmail.com";
         $adminTitle = "rowan van ekeren";
 
@@ -37,7 +41,7 @@ class CronController extends Controller
         $user = User::where('active', 1)->first();
 
         if($user == null){
-            return "no one participated";
+            return $error[0];
         }else if($month >= 1 && $month <= 3){
             $alreadyHasWinner = Winners::whereBetween('created_at', [$periodmonth1,$period1end])->get();
 
@@ -45,7 +49,7 @@ class CronController extends Controller
 
                 $user = User::whereBetween('created_at', [$periodmonth1,$period1end])->where('active', 1)->inRandomOrder()->first();
                 if($user == null){
-                    return "no user in this period";
+                    return $error[1];
                 }else{
                     $addWinner = new Winners([
                         "user_id" => $user->id
@@ -57,7 +61,7 @@ class CronController extends Controller
                     return  $user;
                 }
             }else{
-                return "there already is a winner";
+                return $error[2];
             }
 
         }else if($month >= 4 && $month <= 6){
@@ -67,7 +71,7 @@ class CronController extends Controller
 
                 $user = User::whereBetween('created_at', [$periodmonth2,$period2end])->where('active', 1)->inRandomOrder()->first();
                 if($user == null){
-                    return "no user in this period";
+                    return $error[1];
                 }else{
                     $addWinner = new Winners([
                         "user_id" => $user->id
@@ -78,7 +82,7 @@ class CronController extends Controller
                     return  $user;
                 }
             }else{
-                return "there already is a winner";
+                return $error[2];
             }
 
         }else if($month >= 7 && $month <= 9){
@@ -87,7 +91,7 @@ class CronController extends Controller
             if($alreadyHasWinner->isEmpty()){
                 $user = User::whereBetween('created_at', [$periodmonth3,$period3end])->where('active', 1)->inRandomOrder()->first();
                 if($user == null){
-                    return "no user in this period";
+                    return $error[1];
                 }else {
                     $addWinner = new Winners([
                         "user_id" => $user->id
@@ -98,7 +102,7 @@ class CronController extends Controller
                     return $user;
                 }
             }else{
-                return "there already is a winner";
+                return $error[2];
             }
 
         }else if($month >= 10 && $month <= 12){
@@ -108,7 +112,7 @@ class CronController extends Controller
             if($alreadyHasWinner->isEmpty()){
                 $user = User::whereBetween('created_at', [$periodmonth4,$period4end])->where('active', 1)->inRandomOrder()->first();
                 if($user == null){
-                    return "no user in this period";
+                    return $error[1];
                 }else {
                     $addWinner = new Winners([
                         "user_id" => $user->id
@@ -120,10 +124,10 @@ class CronController extends Controller
                     return $user;
                 }
             }else{
-                return "there already is a winner";
+                return $error[2];
             }
         }else{
-            return "error";
+            return $error[3];
         }
     }
 }

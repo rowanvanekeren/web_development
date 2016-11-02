@@ -2,8 +2,24 @@
 namespace App\Helpers;
 
 use PHPMailer;
-class Helpers{
 
+
+
+class Helpers{
+    public function Exceptions($id){
+
+
+    }
+
+    public function bodyConfirmEmail($first_name){
+        return "Beste ". $first_name .", \n\n
+        Hartelijk dank voor uw deelname aan deze prijsvraag.\n
+        Nu is het nog even afwachten, want de speelperiode is nog niet over.\n
+        De winnaars van deze prijs krijgen persoonlijk bericht.\n
+        \n
+        Bedankt,\n
+        Het CocaCola-team";
+    }
     public function getIP(){
         $ip = "none";
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -36,14 +52,14 @@ class Helpers{
         $mail->isHTML(false);                                  // Set email format to HTML
 
         $mail->Subject = 'Bedankt voor het meedoen met de CocaCola prijsvraag!';
-        $mail->Body    = 'wanneer je verkozen wordt tot winnaar zul je automatisch een mail krijgen';
-        $mail->AltBody = 'wanneer je verkozen wordt tot winnaar zul je automatisch een mail krijgen';
+        $mail->Body    = $this->bodyConfirmEmail($first_name);
+        $mail->AltBody = $this->bodyConfirmEmail($first_name);
 
         if(!$mail->send()) {
-            echo 'Message could not be sent.';
+
             return 'Mailer Error: ' . $mail->ErrorInfo;
         } else {
-            return 'Message has been sent';
+            return 'success';
         }
     }
 
@@ -63,7 +79,7 @@ class Helpers{
         $mail->Port = 587;                                    // TCP port to connect to
         $mail->setFrom('cocagiveaway@hotmail.com', 'CocaCola');
         $mail->addAddress($emailTo, $first_name);     // Add a recipient
-        $mail->addReplyTo('info@example.com', 'Information');
+        //$mail->addReplyTo('info@example.com', 'Information');
         $mail->isHTML(false);                                  // Set email format to HTML
 
         $mail->Subject = 'Wij hebben een winnaar geselecteerd voor deze periode';
@@ -71,10 +87,10 @@ class Helpers{
         $mail->AltBody = 'de winnaar is' . $winner;
 
         if(!$mail->send()) {
-            echo 'Message could not be sent.';
+
             return 'Mailer Error: ' . $mail->ErrorInfo;
         } else {
-            return 'Message has been sent';
+            return 'success';
         }
     }
 }

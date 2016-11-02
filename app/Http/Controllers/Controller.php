@@ -23,13 +23,11 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-
-
     public function checkIP(){
 
         $ip = new Helpers;
-        $ip->getIP();
-        $ipCheck = User::where('ip_adres', $ip)->get();
+        $myIP = $ip->getIP();
+        $ipCheck = User::where('ip_adres', $myIP)->get();
 
         if(!$ipCheck->isEmpty()){
 
@@ -63,6 +61,7 @@ class Controller extends BaseController
     }
 
     public function saveCode($code,$userID){
+        $error = ['there already is this code with a user'];
 
         $checkusr = Codes::where('user_id', $userID)->get();
         $checkusedcode = Codes::where('code', $code)->where('user_id', null)->get();
@@ -77,17 +76,15 @@ class Controller extends BaseController
                 return "succes";
 
             }else{
-                return "there already is this code with a user";
+                return $error[0];
             }
         }else{
-            return "there already is this code with a user";
+            return $error[0];
         }
 
     }
 
-
-
-    public function runFakeDateOnce(){
+/*    public function runFakeDateOnce(){
         $length = 8;
 
         $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
@@ -104,7 +101,7 @@ class Controller extends BaseController
 
             $code->save();
         }
-    }
+    }*/
 
     public function submit_user(Request $request){
        $ipExist = $this->checkIP();
@@ -119,7 +116,9 @@ class Controller extends BaseController
     }
 
     public function submit_participation(Request $request){
-        $ip = $this->getIP();
+
+        $getip = new Helpers;
+        $ip = $getip->getIP();
 
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
@@ -160,8 +159,6 @@ class Controller extends BaseController
 
         //$this->sendConfirmMail();
     }
-
-
 
     public function getWinners(){
 

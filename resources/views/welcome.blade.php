@@ -13,7 +13,7 @@
             @else
             <h2>Helaas je hebt al eens meegedaan</h2>
             @endif
-            <p><a href="./winners">vorige winnaars</a></p>
+            <p ><a href="./winners">vorige winnaars</a></p>
         </div>
  </div>
 </div>
